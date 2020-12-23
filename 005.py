@@ -11,10 +11,8 @@ for i in range(Rows):
     for j in range(Cols):
         temp.append(int(input()))
     if i < Rows -1 :
-        print("Next Row ..... ")
-        pass    
+        print("Next Row ..... ") 
     MyMatrix.append(temp)
-pass
 #************ Convert to Sparse form ********************
 SparseMatrix = []
 R=0
@@ -24,11 +22,8 @@ for Row in MyMatrix:
         if item != 0:
             temp = [R,C,item]
             SparseMatrix.append(temp)
-            pass
         C+=1
-        pass
     R+=1
-    pass
 print("############### Spars form ##############")
 print(SparseMatrix)
 #************ Convert to transpose form ********************
@@ -37,9 +32,7 @@ for i in range(Cols):
     temp =[]
     for j in range(Rows):
         temp.append(MyMatrix[j][i])
-        pass
     TransposeMatrix.append(temp)
-pass
 print("############# transpose form #############")
 print(TransposeMatrix)
 #************ Sum of two matrix ********************
@@ -48,19 +41,6 @@ for Row in MyMatrix:
     temp =[]
     for item in Row:
         temp.append(item + item)
-        pass
     SumMatrix.append(temp)
-pass
 print("############# Sum of Two Matrix #############")
-print(SumMatrix)
-#************ Multiply of two matrix ********************
-SumMatrix = []
-for Row in MyMatrix:
-    temp =[]
-    for item in Row:
-        temp.append(item * item)
-        pass
-    SumMatrix.append(temp)
-pass
-print("############# Multiply of Two Matrix #############")
 print(SumMatrix)
