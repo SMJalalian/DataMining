@@ -1,28 +1,26 @@
-# ماتریس فراوانی کلیه متن ها
+# ماتریس فراوانی کلنات در کلیه متن ها
 
 from Packages.Common import *
-from Packages.TextHelper import TextProcessing, Read_All_Files, Generate_WordCloud, Get_RepeatitionOfWords
-from Packages.MathHelper import Entropy
-from Packages.MatrixHelper import Print_Matrix,CombineAllWordsAsMatrix,GetIterationMatrixWordIndex,GetIterationMatrixFileIndex
+from Packages.TextHelper import TextProcessing, Read_All_Files
+from Packages.MatrixHelper import Print_Matrix,CountItem
 
 clearScreen()
 
 allFiles = Read_All_Files("C:\\Datasets\\")
-Output = []
 AllObjects = []
-allWords = []
+AllWords = []
 for key, value in allFiles.items():
-    currentText = TextProcessing(key, value.read())
-    AllObjects.append(currentText)
+    currentFile = TextProcessing(key, value.read())
+    AllWords += currentFile.UniqueWords
+    AllObjects.append(currentFile)
 
-RawIterationMatrix = CombineAllWordsAsMatrix(AllObjects)
+AllUniqueWords = sorted(set(AllWords))
 
-for file in AllObjects:
-    worlList = file.AllWords
-    fileIndex = GetIterationMatrixFileIndex( RawIterationMatrix, file.DoccumentName)
-    for word in worlList:
-        wordIndex = GetIterationMatrixWordIndex( RawIterationMatrix , str.lower(word))
-        newCount = int(RawIterationMatrix[wordIndex][fileIndex]) + 1
-        RawIterationMatrix[wordIndex][fileIndex] = newCount
-    pass
-print(RawIterationMatrix)
+Output = []
+for word in AllUniqueWords:
+    temp = []
+    for fileObject in AllObjects:
+        temp.append(CountItem(fileObject.PurifiedWords , word))
+    Output.append(temp)
+
+Print_Matrix(Output)

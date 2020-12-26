@@ -62,20 +62,17 @@ def Add_Simple_Matrix(input1 , input2):
         return "Error ... Inconsistent dimension."
 #*************************************************
 def Print_Matrix(input):
-    output = ""
     spaceFactor = GetLongestItem(input) + 1
     rows = Get_Matrix_Row_Numbers(input)
     cols = Get_Matrix_Col_Numbers(input)
     for i in range(rows):
-        temp = " | "
+        print(" | " , end="")
         for j in range(cols):
-            temp += str(input[i][j])
+            print(str(input[i][j]), end="")
             addSpace = int(spaceFactor - len(str(input[i][j])))
             for space in range(addSpace):
-                temp += " "
-        temp+="|\n"
-        output += temp
-    print(output)
+                print(" ", end="")
+        print("|\n", end="")
 #*************************************************
 def GetLongestItem(inputMatrix):
     longest = 0
@@ -87,6 +84,9 @@ def GetLongestItem(inputMatrix):
             if len(number) > longest:
                 longest = len(number)
     return longest
+#*************************************************
+def CountItem( inputText,  item):
+    return inputText.count(item)
 #*************************************************
 def CombineAllWordsAsMatrix( allFilesObject ):
     Output = []
