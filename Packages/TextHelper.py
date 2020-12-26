@@ -28,7 +28,7 @@ def Read_All_Files ( path ):
     return DataSet
 #**************** Sentence Tokenization ****************
 def sentenceTokenization ( context ):
-    return context.split('. ')
+    return context.lower().split('. ')
 #**************** Sentence Tokenization ****************
 def wordTokenization ( purifiedSentences ):
     output = []
