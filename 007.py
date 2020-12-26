@@ -2,7 +2,7 @@
 # مقدار انتروپی هر فایل را محاسبه و چاپ کنید
 
 from Packages.Common import *
-from Packages.TextHelper import TextProcessing, Read_All_Files, Generate_WordCloud, Get_RepeatitionOfWords
+from Packages.TextHelper import TextProcessing, Read_All_Files
 from Packages.MathHelper import Entropy
 
 clearScreen()

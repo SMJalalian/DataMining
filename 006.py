@@ -2,9 +2,7 @@
 # فراوانی تکرار هر کلمه کلیدی را در متن محاسبه و چاپ کنید
 
 from Packages.Common import *
-from Packages.TextHelper import TextProcessing, Read_All_Files, Generate_WordCloud, Get_RepeatitionOfWords
-from Packages.MathHelper import Entropy
-
+from Packages.TextHelper import TextProcessing, Read_All_Files, Get_RepeatitionOfWords
 clearScreen()
 
 allFiles = Read_All_Files("C:\\Datasets\\")
