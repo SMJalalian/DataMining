@@ -1,3 +1,4 @@
+#***************** Read Matrix **********************
 def Get_Matrix ():
     Rows = int(input("Please Enter a number for Rows: "))
     Cols = int(input("Please Enter a number for Cols: " ))
@@ -47,20 +48,6 @@ def Get_Transpose_Matrix(input):
     return TransposeMatrix
 #*************************************************
 def Add_Simple_Matrix(input1 , input2):
-    if  Is_SimpleMatrix_SameSize(input1,input2):
-        SumMatrix = []
-        rows = Get_Matrix_Row_Numbers(input1)
-        cols = Get_Matrix_Col_Numbers(input1)
-        for i in range(rows):
-            temp =[]
-            for j in range(cols):
-                temp.append(input1[i][j] + input2[i][j])
-            SumMatrix.append(temp)
-        return SumMatrix
-    else :
-        return "Error ... Inconsistent dimension."
-#*************************************************
-def Add_Sparse_Matrix(input1 , input2):
     if  Is_SimpleMatrix_SameSize(input1,input2):
         SumMatrix = []
         rows = Get_Matrix_Row_Numbers(input1)
