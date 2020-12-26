@@ -87,3 +87,42 @@ def GetLongestItem(inputMatrix):
             if len(number) > longest:
                 longest = len(number)
     return longest
+#*************************************************
+def CombineAllWordsAsMatrix( allFilesObject ):
+    Output = []
+    allWords = []
+
+    for fileObject in allFilesObject:
+        allWords += fileObject.UniqueWords
+
+    allUnique = sorted(set(allWords))
+    col = len(allFilesObject) + 1
+    row = len(allUnique) + 1
+
+    for i in range(row):
+        temp = []
+        for j in range(col):
+            temp.append("0")
+        Output.append(temp)
+
+    i = 1
+    for doc in allFilesObject:
+        Output[0][i] = doc.DoccumentName
+        i+=1
+    i = 1
+    for word in allUnique:
+        Output[i][0] = word
+        i+=1
+    return Output
+#*************************************************
+def GetIterationMatrixWordIndex( matrix, word ):
+    for i in range(len(matrix)):
+        if matrix[i][0] == word:
+            return i
+    return -1
+#*************************************************
+def GetIterationMatrixFileIndex( matrix, fileName ):
+    for i in range(len(matrix[0])):
+        if matrix[0][i] == fileName:
+            return i
+    return -1
