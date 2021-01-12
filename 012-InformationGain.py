@@ -79,7 +79,7 @@ for attr in All_Attribs:
     print("****************************************")
     print("Information about ",attr)
     print("Minimum Entropy = " , minimumEnropy)
-    print("Selected Condition: " , MinEntropyCondition)
+    print("Selected Condition for Entropy: " , MinEntropyCondition)
     print("Minimum IG = " , minimumIG)
     print("Selected Condition for IG: " , MinIGCondition)
 
