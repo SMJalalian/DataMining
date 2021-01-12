@@ -44,7 +44,7 @@ def CheckConditionalEntropy ( dataFrame ,attrib , conditionValue ):
     Condition_Entropy = (( C_Total / Total) * C_Entropy ) + ((Duality_Total / Total) * Duality_Entropy)
     return Condition_Entropy
 #******************************************************
-def clear(): os.system( 'cls' )
+os.system( 'cls' )    
 df = pd.read_csv("DetaFruit.csv")
 All_Attribs = ["attr1","attr2","attr3"]
 TOTAL_ENTROPY = CheckTotalEntropy(df)
@@ -54,34 +54,27 @@ for attr in All_Attribs:
     min = int(des["min"]) + 1
     max = int(des["max"]) - 1
     iteration = max - min
-    minimumEnropy = 0
-    minimumIG = 0
-    MinEntropyCondition = 0
-    MinIGCondition = 0
+    minimumEnropy = maximumIG = BestCondition = 0
     firstLoop = True
     for i in range(iteration):
         currentEntropy = CheckConditionalEntropy(df, attr , min)
         currentIG = TOTAL_ENTROPY - currentEntropy
-        if firstLoop == True:
-            MinEntropyCondition = min
-            MinIGCondition = min
+        if firstLoop == True:            
             minimumEnropy = currentEntropy
-            minimumIG = currentIG
+            maximumIG = currentIG
+            BestCondition = min
             firstLoop = False
         else:
             if currentEntropy < minimumEnropy:
                 minimumEnropy = currentEntropy
-                MinEntropyCondition = min
-            if currentIG < MinIGCondition :
-                minimumIG = currentIG
-                MinIGCondition = min              
+                maximumIG = currentIG  
+                BestCondition = min       
         min += 1
-    print("****************************************")
+    print("***********************************************")
     print("Information about ",attr)
     print("Minimum Entropy = " , minimumEnropy)
-    print("Selected Condition for Entropy: " , MinEntropyCondition)
-    print("Minimum IG = " , minimumIG)
-    print("Selected Condition for IG: " , MinIGCondition)
+    print("Best IG = " , maximumIG)
+    print("Selected Condition : " , BestCondition)
 
 
 
