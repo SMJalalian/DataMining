@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from Packages.MathHelper import IG_Entropy
 import os
-def clear(): os.system( 'cls' )
 
 def CheckTotalEntropy (dataFrame) :
     Melon = Orange = Apple = 0
@@ -45,6 +44,7 @@ def CheckConditionalEntropy ( dataFrame ,attrib , conditionValue ):
     Condition_Entropy = (( C_Total / Total) * C_Entropy ) + ((Duality_Total / Total) * Duality_Entropy)
     return Condition_Entropy
 #******************************************************
+def clear(): os.system( 'cls' )
 df = pd.read_csv("DetaFruit.csv")
 All_Attribs = ["attr1","attr2","attr3"]
 TOTAL_ENTROPY = CheckTotalEntropy(df)
