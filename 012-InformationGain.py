@@ -1,67 +1,87 @@
 import numpy as np
 import pandas as pd
 from Packages.MathHelper import IG_Entropy
+import os
+def clear(): os.system( 'cls' )
 
+def CheckTotalEntropy (dataFrame) :
+    Melon = Orange = Apple = 0
+    Total = len(dataFrame)
+    for i,row in df.iterrows():
+        if row['class'] =='melon' :
+            Melon += 1
+        elif row['class'] =='orange' :
+            Orange += 1
+        elif row['class'] =='apple' :
+            Apple += 1
+    return IG_Entropy(Melon/Total, Orange/Total, Apple/Total)   
+#*******************************************************************     
+def CheckConditionalEntropy ( dataFrame ,attrib , conditionValue ):
+    
+    Total = len(dataFrame)
+
+    C_Melon = C_Orange = C_Apple = 0
+    for i,row in dataFrame.iterrows():
+        if row['class'] =='melon' and row[attrib] < conditionValue :
+            C_Melon += 1
+        elif row['class'] =='orange' and row[attrib] < conditionValue :
+            C_Orange += 1
+        elif row['class'] =='apple' and row[attrib] < conditionValue :
+            C_Apple += 1
+    C_Total = C_Melon + C_Orange + C_Apple
+    C_Entropy = IG_Entropy(C_Melon/C_Total, C_Orange/C_Total, C_Apple/C_Total)
+
+    Duality_Melon = Duality_Orange = Duality_Apple = 0
+    for i,row in dataFrame.iterrows():
+        if row['class'] =='melon' and row[attrib] >= conditionValue :
+            Duality_Melon += 1
+        elif row['class'] =='orange' and row[attrib] >= conditionValue :
+            Duality_Orange += 1
+        elif row['class'] =='apple' and row[attrib] >= conditionValue :
+            Duality_Apple += 1
+    Duality_Total = Duality_Melon + Duality_Orange + Duality_Apple
+    Duality_Entropy = IG_Entropy(Duality_Melon/Duality_Total, Duality_Orange/Duality_Total, Duality_Apple/Duality_Total)
+
+    Condition_Entropy = (( C_Total / Total) * C_Entropy ) + ((Duality_Total / Total) * Duality_Entropy)
+    return Condition_Entropy
+#******************************************************
 df = pd.read_csv("DetaFruit.csv")
-print(df.head())
-print(df.describe())
+All_Attribs = ["attr1","attr2","attr3"]
+TOTAL_ENTROPY = CheckTotalEntropy(df)
 
-Melon = Orange = Apple = 0
-Total = len(df)
-
-for i,row in df.iterrows():
-    if row['class'] =='melon' :
-        Melon += 1
-    elif row['class'] =='orange' :
-        Orange += 1
-    elif row['class'] =='apple' :
-        Apple += 1
-
-All_Entropy = IG_Entropy(Melon/Total, Orange/Total, Apple/Total)
-print('Dataset Entropy: %.3f bits' % All_Entropy)
-#
-#c1_class0 = 0
-#c1_class1 = 0
-#c1_class2 = 0
-#
-##total number of fruits
-#total = len(df)
-#conditionVaue = 499
-#attrib = 'attr2'
-#
-#for i,row in df.iterrows():
-#    if row['class'] =='melon' and row[attrib] < conditionVaue :
-#        c1_class0 = c1_class0 + 1
-#    elif row['class'] =='orange' and row[attrib] < conditionVaue:
-#        c1_class1 = c1_class1 + 1
-#    elif row['class'] =='apple'  and row[attrib] < conditionVaue:
-#        c1_class2 = c1_class2 + 1
-#c1_total = c1_class0 + c1_class1 + c1_class2
-#c1_entropy = entropy(c1_class0/c1_total , c1_class1/c1_total , c1_class2/c1_total )
-#
-#
-#dc1_class0 = 0
-#dc1_class1 = 0
-#dc1_class2 = 0
-#
-#
-#for i,row in df.iterrows():
-#    if row['class'] =='melon' and row[attrib] >= conditionVaue :
-#        dc1_class0 = dc1_class0 + 1
-#    elif row['class'] =='orange' and row[attrib] >= conditionVaue:
-#        dc1_class1 = dc1_class1 + 1
-#    elif row['class'] =='apple'  and row[attrib] >= conditionVaue:
-#        dc1_class2 = dc1_class2 + 1
-#dc1_total = dc1_class0 + dc1_class1 + dc1_class2
-#dc1_entropy = entropy(dc1_class0/dc1_total , dc1_class1/dc1_total , dc1_class2/dc1_total )
-#
-#conditionEntropy = (c1_total / total) * c1_entropy + (dc1_total/total) * dc1_entropy
-#print('Condition Entropy: %.3f bits' % conditionEntropy)
-#
-#gain = s_entropy - conditionEntropy
-#print('Information Gain: %.3f bits' % gain)
-
-
+for attr in All_Attribs:
+    des = df[attr].describe()
+    min = int(des["min"]) + 1
+    max = int(des["max"]) - 1
+    iteration = max - min
+    minimumEnropy = 0
+    minimumIG = 0
+    MinEntropyCondition = 0
+    MinIGCondition = 0
+    firstLoop = True
+    for i in range(iteration):
+        currentEntropy = CheckConditionalEntropy(df, attr , min)
+        currentIG = TOTAL_ENTROPY - currentEntropy
+        if firstLoop == True:
+            MinEntropyCondition = min
+            MinIGCondition = min
+            minimumEnropy = currentEntropy
+            minimumIG = currentIG
+            firstLoop = False
+        else:
+            if currentEntropy < minimumEnropy:
+                minimumEnropy = currentEntropy
+                MinEntropyCondition = min
+            if currentIG < MinIGCondition :
+                minimumIG = currentIG
+                MinIGCondition = min              
+        min += 1
+    print("****************************************")
+    print("Information about ",attr)
+    print("Minimum Entropy = " , minimumEnropy)
+    print("Selected Condition: " , MinEntropyCondition)
+    print("Minimum IG = " , minimumIG)
+    print("Selected Condition for IG: " , MinIGCondition)
 
 
 
