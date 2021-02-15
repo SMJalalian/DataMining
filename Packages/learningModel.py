@@ -1,5 +1,3 @@
-
-from math import gamma
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -77,7 +75,7 @@ def generateMultinuminalNB(sampleDataframe):
     print("Comment: " , exampleComment)
     print("Related emoji: ", NB_Model.predict(count_vect.transform([exampleComment])))
 #*****************************************************************************************************
-def generateSVC(sampleDataframe, features, labels, GetConfusionMatrix = True, category_id_df = "" , id_to_category = "" ):
+def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = True, category_id_df = "" , id_to_category = "" ):
     X_train, X_test, y_train, y_test,indices_train,indices_test = train_test_split(features, 
                                                                labels, 
                                                                sampleDataframe.index, test_size=0.25, 
@@ -93,7 +91,7 @@ def generateSVC(sampleDataframe, features, labels, GetConfusionMatrix = True, ca
     exampleComment = "کالا بسیار خوب و عالی هست .. به همه توصیه می کنم"
     print("\n\nLinearSVC Model Labeling  .... \n\n")
     print("Comment: " , exampleComment)
-    print("Related emoji: ", getSVCPrediction(sampleDataframe, exampleComment) )
+    print("Related emoji: ", getSVCPrediction(tfidf, sampleDataframe, exampleComment) )
 
     if GetConfusionMatrix :
         X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split(features, labels, sampleDataframe.index, test_size=0.25, random_state=0)
@@ -105,17 +103,13 @@ def generateSVC(sampleDataframe, features, labels, GetConfusionMatrix = True, ca
                                                                    id_to_category[predicted], 
                                                                    conf_mat[actual, predicted]))
 #*****************************************************************************************************
-def getSVCPrediction(sampleDataframe, newComment):
+def getSVCPrediction( tfidf,  sampleDataframe, newComment):
 
     X_input = sampleDataframe['comment'] # Collection of documents
     y_input = sampleDataframe['Label'] # Target or the labels
     X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, 
                                                         test_size=0.25,
                                                         random_state = 0)
-
-    tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5,
-                            ngram_range=(1, 2), 
-                            stop_words='english')
 
     fitted_vectorizer = tfidf.fit(X_train)
     tfidf_vectorizer_vectors = fitted_vectorizer.transform(X_train)

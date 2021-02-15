@@ -2,6 +2,12 @@ import hazm
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def loadRawData(path):
+    dataFrame = pd.read_excel(path)
+    dataFrame = dataFrame[pd.notnull(dataFrame['comment'])]
+    dataFrame = dataFrame.drop_duplicates()
+    return dataFrame 
+
 def loadLabledData(path):
     dataFrame = pd.read_excel(path)
     dataFrame = dataFrame[pd.notnull(dataFrame['Label'])]

@@ -1,9 +1,11 @@
-from Packages.Global import loadLabledData , EmojiInformation , Load_Hazm_Normalization
-from Packages.tfidf import findCorrelatedTerms , generateTFIDF_Vectorizer
-from Packages.learningModel import compareAllModels , generateMultinuminalNB , generateSVC
+from numpy.core.numeric import outer
+from Packages.Global import loadLabledData , loadRawData , EmojiInformation , Load_Hazm_Normalization
+from Packages.TFIDF import findCorrelatedTerms , generateTFIDF_Vectorizer
+from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateSVC
 
 # loading data
-myDataFrame =  loadLabledData("C:\\Datasets\\Labeled_Comments.xlsx")
+myDataFrame = loadLabledData("C:\\Datasets\\Labeled_Comments.xlsx")
+RawComments = loadRawData("C:\\Datasets\\All_Comments_Min.xlsx")
 
 # Show Emoji Information
 EmojiInformation (myDataFrame)
@@ -36,4 +38,33 @@ findCorrelatedTerms(tfidf, features, labels, category_to_id, 3)
 generateMultinuminalNB(myDataFrame)
 
 # ************************** LinearSVC ***************************
-generateSVC(myDataFrame, features, labels , True, category_id_df, id_to_category)
+generateSVC( tfidf, myDataFrame, features, labels , True, category_id_df, id_to_category)
+
+# ************************** Set Label For all Comments ***************************
+from sklearn.svm import LinearSVC
+from sklearn.model_selection import train_test_split
+import pandas as pd
+
+X_input = myDataFrame['comment'] # Collection of documents
+y_input = myDataFrame['Label'] # Target or the labels
+X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, 
+                                                    test_size=0.25,
+                                                    random_state = 0)
+
+fitted_vectorizer = tfidf.fit(X_train)
+tfidf_vectorizer_vectors = fitted_vectorizer.transform(X_train)
+
+SVCModel = LinearSVC().fit(tfidf_vectorizer_vectors, y_train)
+
+#Output1 = pd.DataFrame(columns=['comment', 'Label'])
+#Output_Dic = {}
+f = open('myfile.csv', 'w',encoding='utf8')
+for index, row in RawComments.iterrows():
+    PridictedLabel = SVCModel.predict(fitted_vectorizer.transform([row.comment]))
+    #Output_Dic.update({row.comment : PridictedLabel[0]})
+    #Output1.append({'comment': row.comment, 'Label': PridictedLabel[0]},True)
+    f.write(PridictedLabel[0])
+    f.write('\t\t')
+    f.write(row.comment)
+    f.write('\n')
+f.close()
