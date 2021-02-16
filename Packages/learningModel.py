@@ -117,3 +117,13 @@ def getSVCPrediction( tfidf,  sampleDataframe, newComment):
     model = LinearSVC().fit(tfidf_vectorizer_vectors, y_train)
 
     return model.predict(fitted_vectorizer.transform([newComment]))
+#*****************************************************************************************************
+def ReplaceClassifier(diabetes):
+  if diabetes == True:
+    diabetes='1'
+  else:
+    diabetes='0'
+  return diabetes
+#*****************************************************************************************************
+
+#*****************************************************************************************************

@@ -1,4 +1,3 @@
-from numpy.core.numeric import outer
 from Packages.Global import loadLabledData , loadRawData , EmojiInformation , Load_Hazm_Normalization
 from Packages.TFIDF import findCorrelatedTerms , generateTFIDF_Vectorizer
 from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateSVC
