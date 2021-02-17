@@ -56,7 +56,6 @@ tfidf_vectorizer_vectors = fitted_vectorizer.transform(X_train)
 SVCModel = LinearSVC().fit(tfidf_vectorizer_vectors, y_train)
 
 Output_Dic = {}
-f = open('myfile.csv', 'w',encoding='utf8')
 for index, row in RawComments.iterrows():
     PridictedLabel = SVCModel.predict(fitted_vectorizer.transform([row.comment]))
     Output_Dic.update({row.comment : PridictedLabel[0]})

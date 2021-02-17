@@ -5,7 +5,7 @@ from IPython.display import Image
 from sklearn.tree import export_graphviz
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-from Packages.learningModel import ReplaceClassifier 
+from Packages.LearningModel import ReplaceClassifier 
 
 allInformation =  pd.read_csv("/Datasets/Diabetes_Diagnosis.csv")
 allInformation.diabetes = allInformation.diabetes.apply(ReplaceClassifier)
