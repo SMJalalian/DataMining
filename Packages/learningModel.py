@@ -16,10 +16,6 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 
-
-
-
-
 def compareAllModels(features, labels ):
     models = [
         MultinomialNB(),
@@ -125,17 +121,17 @@ def generateRandomForest( tfidf, sampleDataframe, features, labels, GetConfusion
   if GetConfusionMatrix :
     getConfusionMatrix(category_id_df, id_to_category, y_pred)
 #*****************************************************************************************************
-def generateRegression( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
+def generateLogisticRegression( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
     
     X_train, X_test, y_train, y_test,indices_train,indices_test = train_test_split(features, 
                                                                labels, 
                                                                sampleDataframe.index, test_size=0.8, 
                                                                random_state=1)
-    RegMdel = RegressionModel()
-    SVCModel.fit(X_train, y_train)
-    y_pred = SVCModel.predict(X_test)
+    RegressionMdel = LogisticRegression()
+    RegressionMdel.fit(X_train, y_train)
+    y_pred = RegressionMdel.predict(X_test)
 
-    print("\n\n********* Linear SVC Model Classification Report ***********\n\n")
+    print("\n\n********* Logistic Regression Model Classification Report ***********\n\n")
     print(metrics.classification_report(y_test, y_pred, target_names= sampleDataframe['Label'].unique()))
 #*****************************************************************************************************
 def getSVCPrediction( tfidf,  sampleDataframe, newComment):

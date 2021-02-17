@@ -1,9 +1,9 @@
 from Packages.Global import loadLabledData , EmojiInformation , Load_Hazm_Normalization
 from Packages.TFIDF import findCorrelatedTerms , generateTFIDF_Vectorizer
-from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateLinearSVC , generateRandomForest
+from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateLinearSVC , generateRandomForest , generateLogisticRegression
 
 # loading data
-myDataFrame = loadLabledData("Datasets/Labeled_Comments.csv")
+myDataFrame = loadLabledData("Datasets/Labeled_Comments_All.csv")
 
 # Show Emoji Information
 EmojiInformation (myDataFrame)
@@ -38,7 +38,8 @@ generateMultinuminalNB(myDataFrame)
 # ************************** LinearSVC ***************************
 generateLinearSVC( tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)
 
-# ************************** LogisticRegression ***************************
+# ************************** Random Forest ***************************
 generateRandomForest( tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)
 
-
+# ************************** Logistic Regression ***************************
+generateLogisticRegression(tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)

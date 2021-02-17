@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from Packages.LearningModel import ReplaceClassifier 
 
-allInformation =  pd.read_csv("/Datasets/Diabetes_Diagnosis.csv")
+allInformation =  pd.read_csv("Datasets/Diabetes_Diagnosis.csv")
 allInformation.diabetes = allInformation.diabetes.apply(ReplaceClassifier)
 cols = ['num_preg','glucose_conc',
         'diastolic_bp','thickness',

@@ -1,7 +1,7 @@
 import pandas as pd
 from Packages.LearningModel import ReplaceClassifier 
 
-allInformation =  pd.read_csv("/Datasets/Diabetes_Diagnosis.csv")
+allInformation =  pd.read_csv("Datasets/Diabetes_Diagnosis.csv")
 allInformation.diabetes = allInformation.diabetes.apply(ReplaceClassifier)
 
 #*********************     Question 2     *************************
