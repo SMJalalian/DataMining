@@ -1,6 +1,6 @@
 from Packages.Global import loadLabledData , EmojiInformation , Load_Hazm_Normalization
 from Packages.TFIDF import findCorrelatedTerms , generateTFIDF_Vectorizer
-from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateSVC
+from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateLinearSVC , generateRandomForest
 
 # loading data
 myDataFrame = loadLabledData("Datasets/Labeled_Comments.csv")
@@ -36,6 +36,9 @@ findCorrelatedTerms(tfidf, features, labels, category_to_id, 3)
 generateMultinuminalNB(myDataFrame)
 
 # ************************** LinearSVC ***************************
-generateSVC( tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)
+generateLinearSVC( tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)
+
+# ************************** LogisticRegression ***************************
+generateRandomForest( tfidf, myDataFrame, features, labels , False, category_id_df, id_to_category)
 
 

@@ -27,6 +27,6 @@ def Load_Hazm_Normalization():
     tokenizer = hazm.SentenceTokenizer()
     tokens = hazm.word_tokenize 
     S_Words = list(hazm.stopwords_list())
-    S_Words += ["ام","خد","y۳","y۵","۲۰۱۷","شدم",".","،","ست","…"]
+    S_Words += ["ام","خد","y۳","۱۷۲","y۵","۲۰۱۷","شدم",".","،","ست","…"]
     return normalizer, tokenizer, tokens, S_Words
 #***************************************************

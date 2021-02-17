@@ -3,20 +3,22 @@ import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn.svm import LinearSVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_classification
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.datasets import make_classification
-from sklearn.model_selection import cross_val_score 
-from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_predict
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import confusion_matrix
 
-from sklearn.svm import SVC
+
+
+
 
 def compareAllModels(features, labels ):
     models = [
@@ -75,7 +77,8 @@ def generateMultinuminalNB(sampleDataframe):
     print("Comment: " , exampleComment)
     print("Related emoji: ", NB_Model.predict(count_vect.transform([exampleComment])))
 #*****************************************************************************************************
-def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
+def generateLinearSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
+    
     X_train, X_test, y_train, y_test,indices_train,indices_test = train_test_split(features, 
                                                                labels, 
                                                                sampleDataframe.index, test_size=0.8, 
@@ -84,24 +87,56 @@ def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = 
     SVCModel.fit(X_train, y_train)
     y_pred = SVCModel.predict(X_test)
 
-    print("\n\n*********  SVC Model Classification Report ***********\n\n")
+    print("\n\n********* Linear SVC Model Classification Report ***********\n\n")
     print(metrics.classification_report(y_test, y_pred, target_names= sampleDataframe['Label'].unique()))
 
-    # One example Pridiction by MultinomialNB Model.....
+    # One example Pridiction by Linear SVC Model.....
     exampleComment = "کالا بسیار خوب و عالی هست .. به همه توصیه می کنم"
-    print("\n\nLinearSVC Model Labeling  .... \n\n")
+    print("\n\n Linear SVC Model Labeling  .... \n\n")
     print("Comment: " , exampleComment)
     print("Related emoji: ", getSVCPrediction(tfidf, sampleDataframe, exampleComment) )
 
     if GetConfusionMatrix :
-        X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split(features, labels, sampleDataframe.index, test_size=0.8, random_state=0)
-        conf_mat = confusion_matrix(y_test, y_pred)
-        for predicted in category_id_df.category_id:
-          for actual in category_id_df.category_id:
-            if predicted != actual and conf_mat[actual, predicted] >= 20:
-              print("'{}' predicted as '{}' : {} examples.".format(id_to_category[actual], 
-                                                                   id_to_category[predicted], 
-                                                                   conf_mat[actual, predicted]))
+      getConfusionMatrix(category_id_df, id_to_category, y_pred)
+#*****************************************************************************************************
+def generateRandomForest( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
+
+  X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size = 0.8, random_state = 21)
+                                                            
+                                                               
+  scaler = StandardScaler()
+  X_train = scaler.fit_transform(X_train)
+  X_test = scaler.transform(X_test)
+
+  ForestModel = RandomForestClassifier(n_estimators=200, max_depth=5, random_state=0)
+  ForestModel.fit(X_train, y_train)
+
+  y_pred = ForestModel.predict(X_test)
+
+  print("\n\n*********  RandomForest Model Classification Report ***********\n\n")
+  print(metrics.classification_report(y_test, y_pred, target_names= sampleDataframe['Label'].unique()))
+
+  # One example Pridiction by RandomForest Model.....
+  exampleComment = "کالا بسیار خوب و عالی هست .. به همه توصیه می کنم"
+  print("\n\n RandomForest Model Labeling  .... \n\n")
+  print("Comment: " , exampleComment)
+  print("Related emoji: ", getSVCPrediction(tfidf, sampleDataframe, exampleComment) )
+
+  if GetConfusionMatrix :
+    getConfusionMatrix(category_id_df, id_to_category, y_pred)
+#*****************************************************************************************************
+def generateRegression( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
+    
+    X_train, X_test, y_train, y_test,indices_train,indices_test = train_test_split(features, 
+                                                               labels, 
+                                                               sampleDataframe.index, test_size=0.8, 
+                                                               random_state=1)
+    RegMdel = RegressionModel()
+    SVCModel.fit(X_train, y_train)
+    y_pred = SVCModel.predict(X_test)
+
+    print("\n\n********* Linear SVC Model Classification Report ***********\n\n")
+    print(metrics.classification_report(y_test, y_pred, target_names= sampleDataframe['Label'].unique()))
 #*****************************************************************************************************
 def getSVCPrediction( tfidf,  sampleDataframe, newComment):
 
@@ -125,5 +160,12 @@ def ReplaceClassifier(diabetes):
     diabetes='0'
   return diabetes
 #*****************************************************************************************************
-
-#*****************************************************************************************************
+def getConfusionMatrix( sampleDataframe, features, labels, category_id_df, id_to_category, y_pred):
+  X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split(features, labels, sampleDataframe.index, test_size=0.8, random_state=0)
+  conf_mat = confusion_matrix(y_test, y_pred)
+  for predicted in category_id_df.category_id:
+    for actual in category_id_df.category_id:
+      if predicted != actual and conf_mat[actual, predicted] >= 20:
+        print("'{}' predicted as '{}' : {} examples.".format(id_to_category[actual], 
+                                                              id_to_category[predicted], 
+                                                              conf_mat[actual, predicted]))  
