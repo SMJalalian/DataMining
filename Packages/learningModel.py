@@ -56,7 +56,7 @@ def generateMultinuminalNB(sampleDataframe):
 
     X_input = sampleDataframe['comment'] # Collection of documents
     y_input = sampleDataframe['Label'] # Target or the labels
-    X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, test_size=0.25, random_state = 1)
+    X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, test_size=0.8, random_state = 1)
     X_train_counts = count_vect.fit_transform(X_train)
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 
@@ -75,10 +75,10 @@ def generateMultinuminalNB(sampleDataframe):
     print("Comment: " , exampleComment)
     print("Related emoji: ", NB_Model.predict(count_vect.transform([exampleComment])))
 #*****************************************************************************************************
-def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = True, category_id_df = "" , id_to_category = "" ):
+def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = False, category_id_df = "" , id_to_category = "" ):
     X_train, X_test, y_train, y_test,indices_train,indices_test = train_test_split(features, 
                                                                labels, 
-                                                               sampleDataframe.index, test_size=0.25, 
+                                                               sampleDataframe.index, test_size=0.8, 
                                                                random_state=1)
     SVCModel = LinearSVC()
     SVCModel.fit(X_train, y_train)
@@ -94,7 +94,7 @@ def generateSVC( tfidf, sampleDataframe, features, labels, GetConfusionMatrix = 
     print("Related emoji: ", getSVCPrediction(tfidf, sampleDataframe, exampleComment) )
 
     if GetConfusionMatrix :
-        X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split(features, labels, sampleDataframe.index, test_size=0.25, random_state=0)
+        X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split(features, labels, sampleDataframe.index, test_size=0.8, random_state=0)
         conf_mat = confusion_matrix(y_test, y_pred)
         for predicted in category_id_df.category_id:
           for actual in category_id_df.category_id:
@@ -108,7 +108,7 @@ def getSVCPrediction( tfidf,  sampleDataframe, newComment):
     X_input = sampleDataframe['comment'] # Collection of documents
     y_input = sampleDataframe['Label'] # Target or the labels
     X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, 
-                                                        test_size=0.25,
+                                                        test_size=0.8,
                                                         random_state = 0)
 
     fitted_vectorizer = tfidf.fit(X_train)

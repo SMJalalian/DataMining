@@ -26,5 +26,5 @@ export_graphviz(classifier, out_file=dot_data,
                 filled=True, rounded=True,
                 special_characters=True, feature_names = cols,class_names=['0','1'])
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-graph.write_png('Exports/Diabetes.png')
+graph.write_png('Exports/DecisionTree.png')
 Image(graph.create_png())

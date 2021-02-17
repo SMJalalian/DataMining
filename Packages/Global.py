@@ -9,7 +9,7 @@ def loadRawData(path):
     return dataFrame 
 
 def loadLabledData(path):
-    dataFrame = pd.read_excel(path)
+    dataFrame = pd.read_csv(path)
     dataFrame = dataFrame[pd.notnull(dataFrame['Label'])]
     dataFrame = dataFrame[pd.notnull(dataFrame['comment'])]
     dataFrame = dataFrame.drop_duplicates()
@@ -29,8 +29,4 @@ def Load_Hazm_Normalization():
     S_Words = list(hazm.stopwords_list())
     S_Words += ["ام","خد","y۳","y۵","۲۰۱۷","شدم",".","،","ست","…"]
     return normalizer, tokenizer, tokens, S_Words
-#***************************************************
-#***************************************************
-#***************************************************
-#***************************************************
 #***************************************************
