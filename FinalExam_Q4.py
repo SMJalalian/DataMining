@@ -13,4 +13,3 @@ for column in allInformation:
         List = allInformation[column]
         result = pd.cut(List,4)
         print(result)
-
