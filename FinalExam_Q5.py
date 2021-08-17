@@ -1,5 +1,5 @@
 from Packages.Global import loadLabledData , EmojiInformation , Load_Hazm_Normalization
-from Packages.tfidf import findCorrelatedTerms , generateTFIDF_Vectorizer
+from Packages.TFIDF import findCorrelatedTerms , generateTFIDF_Vectorizer
 from Packages.LearningModel import compareAllModels , generateMultinuminalNB , generateLinearSVC , generateRandomForest , generateLogisticRegression
 
 # loading data
